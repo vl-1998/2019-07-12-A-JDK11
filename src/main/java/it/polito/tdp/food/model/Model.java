@@ -1,5 +1,7 @@
 package it.polito.tdp.food.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jgrapht.Graph;
@@ -15,13 +17,15 @@ public class Model {
 	private Graph<Food, DefaultWeightedEdge> graph ; 
 	
 	public Model() {
-		this.graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class) ;
 	}
 	
 	public List<Food> getFoods(int portions) {
 		FoodDao dao = new FoodDao() ;
 		this.cibi = dao.getFoodsByPortions(portions) ;
-		
+
+		// Crea un grafo nuovo e vuoto
+		this.graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class) ;
+
 		// Aggiungi i vertici
 		Graphs.addAllVertices(this.graph, this.cibi) ;
 		
@@ -39,6 +43,23 @@ public class Model {
 		System.out.println(this.graph) ;
 		
 		return this.cibi ;
+	}
+	
+	public List<FoodCalories> elencoCibiConnessi(Food f) {
+		
+		List<FoodCalories> result = new ArrayList<>() ;
+		
+		List<Food> vicini = Graphs.neighborListOf(this.graph, f) ;
+		
+		for(Food v: vicini) {
+			Double calorie = this.graph.getEdgeWeight(this.graph.getEdge(f, v)) ;
+			result.add(new FoodCalories(v, calorie)) ;
+		}
+		
+		Collections.sort(result);
+		
+		return result ;
+		
 	}
 
 }
