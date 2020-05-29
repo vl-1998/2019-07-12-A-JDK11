@@ -89,7 +89,24 @@ public class FoodController {
 	@FXML
 	void doSimula(ActionEvent event) {
 		txtResult.clear();
-		txtResult.appendText("Simulazione...");
+		
+		Food f = boxFood.getValue() ;
+		
+		if(f==null) {
+			txtResult.appendText("ERRORE: devi selezionare un cibo\n");
+			return ;
+		}
+		
+		int K ;
+		try {
+			K = Integer.parseInt(txtK.getText()) ;
+		} catch(NumberFormatException ex) {
+			txtResult.appendText("ERRORE: K deve essere un numero\n");
+			return;
+		}
+
+		String messaggio = model.simula(f, K);
+		txtResult.appendText(messaggio);
 	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
