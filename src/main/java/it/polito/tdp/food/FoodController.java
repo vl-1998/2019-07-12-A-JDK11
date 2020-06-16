@@ -82,13 +82,33 @@ public class FoodController {
     	List<FoodCalories> result=this.model.calorieCongiunte(food);
     	
     	for(int i =0; i<=4 && i<result.size(); i++) {
-    		txtResult.appendText(String.format("%s \n", result.get(i).toString()));
+    		//txtResult.appendText(String.format("%s\n", result.get(i).toString()));
+    		txtResult.appendText(result.get(i).toString()+"\n");
     	}
     }
 
     @FXML
     void doSimula(ActionEvent event) {
     	txtResult.clear();
+    	String inserito = txtK.getText();
+    	try {
+    		int k = Integer.parseInt(inserito);
+    		if (k<1 || k>10) {
+    			txtResult.appendText("Inserire un valore di K valido, compreso tra 1 e 10.");
+    			return;
+    		}
+    		Food food = boxFood.getValue();
+        	if(food==null) {
+        		txtResult.appendText("Selezionare un cibo");
+        		return;
+        	}
+    		
+    		txtResult.appendText(this.model.simula(food, k));
+    		
+    	} catch (NumberFormatException e) {
+			txtResult.appendText("Inserire numero.");
+			return;
+		}
     
     }
 

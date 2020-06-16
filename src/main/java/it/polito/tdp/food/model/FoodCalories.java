@@ -30,7 +30,8 @@ public class FoodCalories implements Comparable <FoodCalories>{
 	}
 	@Override
 	public String toString() {
-		return "Cibo: "+f+". Numero calorie: "+calorie;
+		return String.format("Cibo: %s. Numero calorie: %f", f,calorie);
+		
 	}
 	
 	

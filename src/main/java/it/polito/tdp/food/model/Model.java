@@ -19,11 +19,12 @@ public class Model {
 	private FoodDao dao;
 	
 	public Model () {
-		idMap= new HashMap<>();
+		
 		dao = new FoodDao();
 	}
 	
 	public void creaGrafo (int x) {
+		idMap= new HashMap<>();
 		this.grafo= new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 		
 		dao.listFood(idMap, x);
@@ -42,6 +43,15 @@ public class Model {
 		return this.grafo.edgeSet().size();
 	}
 	
+	public String simula(Food cibo, int K) {
+		Simulator sim = new Simulator(this.grafo, this);
+		sim.setK(K);
+		sim.init(cibo);
+		sim.run();
+		
+		String result = String.format("Preparati %d cibi in %f minuti\n", sim.getCibiPreparati(), sim.getTempoPreparazione());
+		return result;
+	}
 	
 	public List<Food> getDescrizione(){
 		List <Food> result = new ArrayList<> ();
